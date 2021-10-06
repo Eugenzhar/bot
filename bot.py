@@ -44,8 +44,12 @@ async def get_text_messages(msg: types.Message):
         await msg.answer('Не понимаю, что это значит.')
 
 @dp.message_handler()
+# 1 способ ответа
 async def echo_message(msg: types.Message):
-    await bot.send_message(msg.from_user.id, msg.txt)
+    text = f"Ты что написал: {msg.text} !"
+    await bot.send_message(chat_id=msg.from_user.id, text=text)
+# 2 способ ответа
+    await msg.answer(text=text)
 
 if __name__ == '__main__':
     executor.start_polling(dp)
