@@ -5,12 +5,14 @@ from aiogram.utils import executor
 from cbrf import get_rates
 from config import TOKEN
 
-
 bot = Bot(token=TOKEN)
 dp = Dispatcher(bot)
+
+
 # не пойму как приделать cbrf
 def main():
     rate = get_rates()
+
 
 @dp.message_handler(commands=['start'])
 async def process_start_command(message: types.Message):
@@ -24,7 +26,8 @@ async def proces_help_command(message: types.Message):
 
 @dp.message_handler(commands=['dollar'])
 async def proces_dollar_command(message: types.Message):
-   await message.reply("я пока не знаю сколько стоит доллар!")
+    await message.reply("я пока не знаю сколько стоит доллар!")
+
 
 @dp.message_handler(content_types=['text'])
 async def get_text_messages(msg: types.Message):
@@ -32,8 +35,9 @@ async def get_text_messages(msg: types.Message):
         # здесь бот должен сказать результат cbrf , но не говорит
         await msg.answer('я пока не знаю как определять курсы валют!')
 
-#@dp.message_handler(commands=['курс', 'курсы', 'цена', 'стоймость'])
-#async def proces_currency_command(message: types.Message):
+
+# @dp.message_handler(commands=['курс', 'курсы', 'цена', 'стоймость'])
+# async def proces_currency_command(message: types.Message):
 #    await message.reply("я пока не знаю как определять курсы валют!")
 
 @dp.message_handler(content_types=['text'])
@@ -43,13 +47,15 @@ async def get_text_messages(msg: types.Message):
     else:
         await msg.answer('Не понимаю, что это значит.')
 
+
 @dp.message_handler()
 # 1 способ ответа
-async def echo_message(msg: types.Message):
-    text = f"Ты что написал: {msg.text} !"
-    await bot.send_message(chat_id=msg.from_user.id, text=text)
-# 2 способ ответа
-    await msg.answer(text=text)
+async def echo_message(message: types.Message):
+    #    text = f"Ты что написал: {message.text} !"
+    #    await bot.send_message(message.chat.id,chat.id, message.text)
+    # 2 способ ответа
+    await message.answer(message.text)
+
 
 if __name__ == '__main__':
-    executor.start_polling(dp)
+    executor.start_polling(dp, skip_updates=True)
